@@ -1,13 +1,29 @@
 import React, { useEffect, useState } from "react";
 import Head from "next/head";
 
+import useSWR from "swr";
+
+import axios from "axios";
+axios.defaults.baseURL = "http://localhost:5000";
+
 let initialData = [
   { id: 1, title: "todo one" },
   { id: 2, title: "todo two" },
 ];
 
-const Todos = () => {
-  const data = initialData;
+const Todos = ({ initialData }) => {
+  // const [data, setData] = useState([]);
+
+  const { data, error } = useSWR("/todos", { initialData });
+
+  // useEffect(() => {
+  //   getTodos();
+  // }, []);
+
+  // const getTodos = async () => {
+  //   const res = await axios.get("/todos");
+  //   setData(res.data);
+  // };
 
   const handleDelete = async (id) => {};
 
@@ -83,5 +99,11 @@ const Todos = () => {
     </div>
   );
 };
+export async function getServerSideProps() {
+  const { data } = await axios.get("/todos");
+  return {
+    props: { initialData: data },
+  };
+}
 
 export default Todos;

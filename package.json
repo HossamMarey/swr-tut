@@ -4,7 +4,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "server": "json-server --watch db/todos.json -p 5000"
+    "server": "json-server --watch db/todos.json -p 5000 -d 2000"
   },
   "dependencies": {
     "axios": "^0.21.1",

@@ -1,7 +1,21 @@
 import React from "react";
 
+import axios from "axios";
+axios.defaults.baseURL = "http://localhost:5000";
+
+import useSWR, { trigger, mutate } from "swr";
+
 const AddTodo = () => {
-  const addNewTodo = async (e) => {};
+  const { data, error } = useSWR("/todos");
+
+  const addNewTodo = async (e) => {
+    e.preventDefault();
+    if (e.target.todo.value) {
+      mutate("/todos", [...data, { title: e.target.todo.value }], false);
+      await axios.post("/todos", { title: e.target.todo.value });
+      trigger("/todos");
+    }
+  };
 
   return (
     <div className="container mx-auto px-6">
